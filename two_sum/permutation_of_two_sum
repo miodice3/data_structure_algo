@@ -1,0 +1,49 @@
+Question:
+
+Given an array of integers arr and an integer sum_value, return the indices of the two elements in the array that add up to sum_value. Each input will have exactly one solution, and you cannot use the same element twice. Return the indices in any order.
+
+Example 1:
+
+Input: arr = [1, 4, 5, 11], sum_value = 9
+Output: [1, 2]
+Explanation: Because arr[1] + arr[2] == 9, we return [1, 2].
+Example 2:
+
+Input: arr = [10, 3, 6, 8], sum_value = 14
+Output: [2, 3]
+Explanation: Because arr[2] + arr[3] == 14, we return [2, 3].
+Example 3:
+
+Input: arr = [2, 3, 7, 15], sum_value = 10
+Output: [1, 2]
+Explanation: Because arr[1] + arr[2] == 10, we return [1, 2].
+Constraints:
+
+2 <= arr.length <= 10⁴
+-10⁹ <= arr[i] <= 10⁹
+-10⁹ <= sum_value <= 10⁹
+Only one valid answer exists.
+Try solving this and send back your result!
+
+- - - 
+
+# @param {Integer[]} arr, an array of integers
+# @param {Integer} sum_value
+#
+# return the indices of the two elements in the array that add up to sum_value. Each input will have exactly one solution, and you cannot use the same element twice.
+
+def return_indices(arr, sum_value)
+
+  hash_map = {}
+
+  arr.each_with_index do |value, index|
+    paired_value = sum_value - value
+
+    if hash_map.key?(paired_value)
+	return [index, hash_map[paired_value]]
+    end
+
+    hash_map[value] = index
+  end
+
+end
