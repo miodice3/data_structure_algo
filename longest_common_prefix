@@ -30,46 +30,33 @@ def longest_common_prefix(strs)
     # guard against single element array of strs
     return return_str if strs.length == 1
 
-    matched_chars = 0
+    # this can be done in a single line and remove first if condtion below.
+    # refactor after solve
     prefix_hsh = {}
 
+    return_str.split('').each_with_index do |letter, j|
+        prefix_hsh[j] = letter
+    end
+
     strs.each_with_index do | word, index |
-        if index == 0
-            word.split('').each_with_index do |letter, j|
-                prefix_hsh[j] = letter
-            end
-            puts prefix_hsh
-        elsif word == ""
-            return ""
-        else
-            # guard against word shorter than return_str
-            if word.length < return_str.length
-                return_str = return_str[0..word.length-1]
-            # guard against return_str shorter than word
-            elsif word.length > return_str.length
-                word = word[0..return_str.length-1]
-                puts "word has been truncated, this is new word: #{word}"
-            end
+        min_letters = [prefix_hsh.keys.count, word.length].min
 
-            puts "word: #{word}, index: #{index}"
-            word.split('').each_with_index do |letter, n|
-                if prefix_hsh[n] == letter
-                    matched_chars = matched_chars + 1
-                    next
-                elsif n == 0
-                    matched_chars = 0
-                    return ""
+        # remove excess pairs to match shorter of the two words
+        prefix_hsh.keys.each do |k|
+            # delete keys and values to length of shorter of two words.
+            # offset length of longest word to index
+            prefix_hsh.delete(k) if k > min_letters - 1
+        end
+        
+        word.split('').each_with_index do |letter, n|
+            if prefix_hsh[n] == letter
+                next
+            else
+                prefix_hsh.keys.each do |k|
+                    prefix_hsh.delete(k) if k >=n
                 end
-
-                if return_str.length > 1
-                    return_str = return_str[0..n-1]
-                else
-                    return_str = ""
-                end
-                break
             end
         end
     end
-    return matched_chars > 0 ? return_str : "" 
+    prefix_hsh.values.empty? ? "" : prefix_hsh.values.join("")
 end
-
