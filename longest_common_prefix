@@ -26,30 +26,46 @@ strs[i] consists of only lowercase English letters.
 # @param {String[]} strs
 # @return {String}
 def longest_common_prefix(strs)
-    return_str = ""
+    return_str = strs[0]
+    # guard against single element array of strs
+    return return_str if strs.length == 1
+
     matched_chars = 0
     prefix_hsh = {}
 
-    # always at least 1 word in the array
-    # each word will be 0-200 characters long
-    # each word is only lowercase english letters
-    #
     strs.each_with_index do | word, index |
         if index == 0
             word.split('').each_with_index do |letter, j|
                 prefix_hsh[j] = letter
             end
             puts prefix_hsh
-            return_str = word
+        elsif word == ""
+            return ""
         else
-            puts "within else on strs index #{index}"
+            # guard against word shorter than return_str
+            if word.length < return_str.length
+                return_str = return_str[0..word.length-1]
+            # guard against return_str shorter than word
+            elsif word.length > return_str.length
+                word = word[0..return_str.length-1]
+                puts "word has been truncated, this is new word: #{word}"
+            end
+
+            puts "word: #{word}, index: #{index}"
             word.split('').each_with_index do |letter, n|
                 if prefix_hsh[n] == letter
                     matched_chars = matched_chars + 1
                     next
+                elsif n == 0
+                    matched_chars = 0
+                    return ""
                 end
 
-                return_str = return_str[0..n-1]
+                if return_str.length > 1
+                    return_str = return_str[0..n-1]
+                else
+                    return_str = ""
+                end
                 break
             end
         end
@@ -57,15 +73,3 @@ def longest_common_prefix(strs)
     return matched_chars > 0 ? return_str : "" 
 end
 
-# OBJECTIVE
-# array of strings.  find and return the largest common prefix, or start to word
-
-# we ned to check each word one time, so we'll need to iterate over the array of words.
-#
-# for the first word, we should split each character into the prefix_hash, with index sequentially starting at 0, value as letter.
-# set return_str as first word
-#
-# the following words should be broken up and checked against the hash for the max of keys the hash has, or the current words length.
-# leverage last index that returned a letter match, and truncate the return_str to this many characters.
-
-# return the return_str, if no match validate "" 
