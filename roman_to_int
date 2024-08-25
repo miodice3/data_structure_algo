@@ -47,15 +47,13 @@ It is guaranteed that s is a valid roman numeral in the range [1, 3999].
 # @param {String} s
 # @return {Integer}
 def roman_to_int(s)
-    priority_1_map = {
+    map = {
         IV: 4,
         IX: 9,
         XL: 40,
         XC: 90,
         CD: 400,
-        CM: 900
-    }
-    priority_2_map = {
+        CM: 900,
         I: 1,
         V: 5,
         X: 10,
@@ -63,19 +61,17 @@ def roman_to_int(s)
         C: 100,
         D: 500,
         M: 1000
+
     }
 
     num_to_return = 0
+
     while s.length > 0
-
-    first_two_char = s[0..1]
-    first_char = s[0]
-
-        if priority_1_map[first_two_char.to_sym]
-            num_to_return = num_to_return + priority_1_map[first_two_char.to_sym]
+        if map[s[0..1].to_sym] && s.length >=2
+            num_to_return = num_to_return + map[s[0..1].to_sym]
             s = s[2..-1]
         else
-            num_to_return = num_to_return + priority_2_map[first_char.to_sym]
+            num_to_return = num_to_return + map[s[0].to_sym]
             s = s[1..-1]
         end
     end
