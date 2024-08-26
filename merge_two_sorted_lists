@@ -29,8 +29,6 @@ Both list1 and list2 are sorted in non-decreasing order.
 
 - - - 
 
-passing local
-
 # Definition for singly-linked list.
 # class ListNode
 #     attr_accessor :val, :next
@@ -52,37 +50,28 @@ def merge_two_lists(list1, list2)
         return list1
     end
 
-    puts "list1: #{list1.inspect}"
-
-    puts "list2: #{list2.inspect}"
-
     if list1.val <= list2.val
-        puts "LIST 1 VAL less than or queal to LIST2 VAL"
         head_node = list1
         secondary_list_head = list2
     elsif list1.val > list2.val
-        puts "LIST 1 VAL GREATER THAN LIST2 VAL"
         head_node = list2 # [1]
         secondary_list_head = list1 # [2]
     end
 
     current_node = head_node
-    puts "current_node #{current_node}, current_node.next #{current_node.next}, current_node.val: #{current_node.val}"
     idx = 0
-    while true do
-        puts "this is index of while loop: #{idx}"
-        puts "secondary_list_head.val: #{secondary_list_head.val}"
-        puts "current_node.next.val: #{current_node.next.val}"
 
-        if secondary_list_head.val <= current_node.next.val
-            puts "within if block"
+    while true do
+        if current_node.next.nil?
+            current_node.next = secondary_list_head
+            break
+        elsif secondary_list_head.val <= current_node.next.val
             node_to_insert = secondary_list_head
             secondary_list_head = node_to_insert.next
             node_to_insert.next = current_node.next
             current_node.next = node_to_insert
         end
 
-        puts "going to break if TRUE: #{secondary_list_head == nil}"
         break if secondary_list_head == nil # || secondary_list_head.next == nil
         
         current_node = current_node.next
@@ -90,3 +79,4 @@ def merge_two_lists(list1, list2)
     end
     head_node
 end
+
