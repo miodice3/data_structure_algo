@@ -1,0 +1,76 @@
+Valid Parentheses
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Every close bracket has a corresponding open bracket of the same type.
+ 
+
+Example 1:
+
+Input: s = "()"
+
+Output: true
+
+Example 2:
+
+Input: s = "()[]{}"
+
+Output: true
+
+Example 3:
+
+Input: s = "(]"
+
+Output: false
+
+Example 4:
+
+Input: s = "([])"
+
+Output: true
+
+ 
+
+Constraints:
+
+1 <= s.length <= 104
+s consists of parentheses only '()[]{}'.
+
+- - - - - 
+
+# @param {String} s
+# @return {Boolean}
+def is_valid(s)
+    return false if s.length < 2
+
+    index = 0
+    cache_map = {}
+    counterpart_map = {
+        "(" => ")",
+        ")" => "(",
+        "{" => "}",
+        "}" => "{",
+        "[" => "]",
+        "]" => "["
+    }
+    open_symbols = ["(", "{", "["]
+
+    s.split('').each do | character |
+        if open_symbols.include?(character)
+            cache_map[index] = character
+            index = index + 1
+        else
+            previous_character = cache_map[index -1]
+            return false unless character == counterpart_map[previous_character]
+
+            cache_map.delete(index - 1)
+            index = index -1
+        end
+    end
+    cache_map.keys.empty?
+end
+
