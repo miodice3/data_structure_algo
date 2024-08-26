@@ -74,3 +74,32 @@ def is_valid(s)
     cache_map.keys.empty?
 end
 
+- - - - 
+
+# @param {String} s
+# @return {Boolean}
+def is_valid(s)
+
+    stack = []
+    counterpart_map = {
+        "(" => ")",
+        ")" => "(",
+        "{" => "}",
+        "}" => "{",
+        "[" => "]",
+        "]" => "["
+    }
+
+    s.split('').each do | char |
+        if char == "(" || char == "{" || char == "["
+            stack << char
+        else
+            previous_char = stack[-1]
+            return false unless char == counterpart_map[previous_char]
+
+            stack.pop
+        end
+    end
+    stack.empty?
+end
+
