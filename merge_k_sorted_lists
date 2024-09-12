@@ -1,0 +1,100 @@
+# TODO: this can be refactored using a min-heap data strucutre. after working with these in coursework, refactor this solution.
+https://leetcode.com/problems/merge-k-sorted-lists/
+
+Hard
+Topics
+Companies
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it.
+
+ 
+
+Example 1:
+
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+merging them into one sorted list:
+1->1->2->3->4->4->5->6
+Example 2:
+
+Input: lists = []
+Output: []
+Example 3:
+
+Input: lists = [[]]
+Output: []
+ 
+
+Constraints:
+
+k == lists.length
+0 <= k <= 104
+0 <= lists[i].length <= 500
+-104 <= lists[i][j] <= 104
+lists[i] is sorted in ascending order.
+The sum of lists[i].length will not exceed 104.
+
+
+- - - -
+
+local solution passing:
+
+# Definition for singly-linked list.
+# class ListNode
+#     attr_accessor :val, :next
+#     def initialize(val = 0, _next = nil)
+#         @val = val
+#         @next = _next
+#     end
+# end
+#
+# @param {ListNode[]} lists
+# @return {ListNode}
+def merge_k_lists(lists)
+    return lists.compact if lists.compact.empty?
+
+    hash_map_of_nodes = {}
+
+    lists.each do | node |
+        while node do
+            if hash_map_of_nodes[node.val] == nil
+                hash_map_of_nodes[node.val] = [node]
+            else
+                hash_map_of_nodes[node.val] << node
+            end
+            node = node.next
+        end
+    end
+
+    array_of_asscending_keys = Hash[hash_map_of_nodes.sort].keys
+
+    head_node = nil
+    current_tail_node = nil
+
+    array_of_asscending_keys.each do | k |
+        ray_of_nodes = hash_map_of_nodes[k]
+        
+        i = 0
+
+        while i < ray_of_nodes.length do
+            ray_of_nodes[i].next = ray_of_nodes[i+1]
+            i = i + 1
+        end
+
+        if head_node.nil?
+            head_node = ray_of_nodes.first
+            current_tail_node = ray_of_nodes.last
+        else
+            current_tail_node.next = ray_of_nodes.first
+            current_tail_node = ray_of_nodes.last
+        end
+    end
+    head_node
+end
