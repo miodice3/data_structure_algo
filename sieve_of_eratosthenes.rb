@@ -11,20 +11,13 @@ def list_of_primes(n)
   range_list = Array (2..n)
   eval_num = 2.0
 
-  while eval_num <= n do
+  while eval_num  && eval_num <= n do
+    range_list.delete_if { |cur_num| cur_num != eval_num && cur_num % eval_num == 0 }
 
-    range_list = range_list.map do | cur_num |
-
-      if cur_num == nil || eval_num >= cur_num
-        cur_num
-      else
-        cur_num % eval_num == 0 ? nil : cur_num
-      end
-    end
-    eval_num = eval_num + 1
+    eval_num = range_list.find { |num| num > eval_num }
   end 
 
-  return range_list.compact
+  range_list
 end
 
 puts [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97] == list_of_primes(100)
