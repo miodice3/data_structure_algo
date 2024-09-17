@@ -14,4 +14,4 @@ def fibonacci_value(n)
   fibonacci_value(n-1) + fibonacci_value(n-2)
 end
 
-fibonacci_value(10)
+fibonacci_value(1000)

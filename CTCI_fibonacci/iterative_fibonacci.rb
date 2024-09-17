@@ -20,4 +20,4 @@ def fibonacci_value(n)
   f_hsh[n]
 end
 
-fibonacci_value(10)
+fibonacci_value(1000)
