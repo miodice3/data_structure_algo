@@ -84,3 +84,45 @@ def remove_duplicates(nums)
     end
     mapped_ray.length
 end
+
+
+- - - - - 
+
+refactored approach removing an array loop
+
+# @param {Integer[]} nums
+# @return {Integer}, Then return the number of unique elements in nums.
+#
+def remove_duplicates(nums)
+
+    # due to non-descending order, we know the first element will remain unchanged.
+    last_unique_index_location = 0
+    unique_idx_value = nums.first
+
+    # start scan from index 1
+    scan_idx = 1
+
+    
+    # increment scan_idx to check over each item in the array.
+    # maintain a value, and pointer to the last updated array index.
+    #
+    while scan_idx < nums.length do
+        if nums[scan_idx] != unique_idx_value
+            # 1. increment index to update forward
+            # 2. set current unique_idx_value to new number
+            # 3. update nums index with new value
+            #
+            last_unique_index_location += 1
+            unique_idx_value = nums[scan_idx]
+            nums[last_unique_index_location] = unique_idx_value
+        end
+
+        scan_idx += 1
+    end
+
+    # return last updated index location + 1 to offset starting
+    #  at 0, instead of another array operation
+    #
+    last_unique_index_location + 1
+end
+
