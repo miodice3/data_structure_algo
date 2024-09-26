@@ -60,3 +60,29 @@ def remove_element(nums, val)
 
     initial_len - elements_removed
 end
+
+- - - 
+# manual implementation
+
+# @param {Integer[]} nums
+# @param {Integer} val
+# @return {Integer} -  return the number of elements in nums which are not equal to val
+#
+def remove_element(nums, val)
+    initial_len = nums.length
+    elements_removed = 0
+
+    i = 0
+
+    while i < nums.length do        
+        if nums[i] == val
+            nums.slice!(i)
+            elements_removed += 1            
+        else
+            i += 1
+        end
+    end
+
+    initial_len - elements_removed
+end
+
