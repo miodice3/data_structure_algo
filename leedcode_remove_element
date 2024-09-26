@@ -63,6 +63,8 @@ end
 
 - - - 
 # manual implementation
+# slice is an array shifting operation. although this solution works, worst case we will shift every element in the array
+# which I believe simplifies to O(n^2).
 
 # @param {Integer[]} nums
 # @param {Integer} val
@@ -84,5 +86,31 @@ def remove_element(nums, val)
     end
 
     initial_len - elements_removed
+end
+
+- - - - 
+# consulting with gpt on shifting away from array-shift operations, we can implement the below.
+# note: the question allows us to leave the remainder of the array elements in place, however
+# take care while attempting to remove (slice!) elements out of an array during a .each iteration.
+# it seems like this may not be optimal, lean towards maintaining a write_index pointer variable instead
+# and clean up end of array after if needed.
+
+# @param {Integer[]} nums
+# @param {Integer} val
+# @return {Integer} -  return the number of elements in nums which are not equal to val
+def remove_element(nums, val)
+    write_idx = 0
+
+    nums.each do | e |
+        if e != val
+            # each time val mis-match, or element to retain, we increment.
+            # therefore, write_idx also is the number to return
+            #
+            nums[write_idx] = e
+            write_idx += 1
+        end
+    end
+    
+    write_idx
 end
 
