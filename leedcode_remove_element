@@ -1,0 +1,116 @@
+The judge will test your solution with the following code:
+
+int[] nums = [...]; // Input array
+int val = ...; // Value to remove
+int[] expectedNums = [...]; // The expected answer with correct length.
+                            // It is sorted with no values equaling val.
+
+int k = removeElement(nums, val); // Calls your implementation
+
+assert k == expectedNums.length;
+sort(nums, 0, k); // Sort the first k elements of nums
+for (int i = 0; i < actualLength; i++) {
+    assert nums[i] == expectedNums[i];
+}
+If all assertions pass, then your solution will be accepted.
+
+ 
+
+Example 1:
+
+Input: nums = [3,2,2,3], val = 3
+Output: 2, nums = [2,2,_,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 2.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+Example 2:
+
+Input: nums = [0,1,2,2,3,0,4,2], val = 2
+Output: 5, nums = [0,1,4,0,3,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
+Note that the five elements can be returned in any order.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+ 
+
+Constraints:
+
+0 <= nums.length <= 100
+0 <= nums[i] <= 50
+0 <= val <= 100
+
+- - - - 
+
+solution 1: using ruby iterator for in place array modification and single pass of array
+
+# @param {Integer[]} nums
+# @param {Integer} val
+# @return {Integer} -  return the number of elements in nums which are not equal to val
+#
+def remove_element(nums, val)
+    initial_len = nums.length
+    elements_removed = 0
+
+    nums.delete_if do | element |
+        if element == val
+            elements_removed += 1
+            true
+        else
+            false
+        end
+    end
+
+    initial_len - elements_removed
+end
+
+- - - 
+# manual implementation
+# slice is an array shifting operation. although this solution works, worst case we will shift every element in the array
+# which I believe simplifies to O(n^2).
+
+# @param {Integer[]} nums
+# @param {Integer} val
+# @return {Integer} -  return the number of elements in nums which are not equal to val
+#
+def remove_element(nums, val)
+    initial_len = nums.length
+    elements_removed = 0
+
+    i = 0
+
+    while i < nums.length do        
+        if nums[i] == val
+            nums.slice!(i)
+            elements_removed += 1            
+        else
+            i += 1
+        end
+    end
+
+    initial_len - elements_removed
+end
+
+- - - - 
+# consulting with gpt on shifting away from array-shift operations, we can implement the below.
+# note: the question allows us to leave the remainder of the array elements in place, however
+# take care while attempting to remove (slice!) elements out of an array during a .each iteration.
+# it seems like this may not be optimal, lean towards maintaining a write_index pointer variable instead
+# and clean up end of array after if needed.
+
+# @param {Integer[]} nums
+# @param {Integer} val
+# @return {Integer} -  return the number of elements in nums which are not equal to val
+def remove_element(nums, val)
+    write_idx = 0
+
+    nums.each do | e |
+        if e != val
+            # each time val mis-match, or element to retain, we increment.
+            # therefore, write_idx also is the number to return
+            #
+            nums[write_idx] = e
+            write_idx += 1
+        end
+    end
+    
+    write_idx
+end
+
