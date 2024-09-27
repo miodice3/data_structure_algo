@@ -1,0 +1,98 @@
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/description/
+
+28. Find the Index of the First Occurrence in a String
+Solved
+Easy
+Topics
+Companies
+Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+ 
+
+Example 1:
+
+Input: haystack = "sadbutsad", needle = "sad"
+Output: 0
+Explanation: "sad" occurs at index 0 and 6.
+The first occurrence is at index 0, so we return 0.
+Example 2:
+
+Input: haystack = "leetcode", needle = "leeto"
+Output: -1
+Explanation: "leeto" did not occur in "leetcode", so we return -1.
+ 
+
+Constraints:
+
+1 <= haystack.length, needle.length <= 104
+haystack and needle consist of only lowercase English characters.
+
+- - - --
+
+# initial thought and implementation, this feels over complicated and hard to read.  does not incorporate incrementing haystack_idx after good matches within needle, causing dupliate work
+
+# thought notes on problem approach:
+# assumption that haystack is typically longer than needle. Should this inform our approach?
+# worst case, we'll need to basically search the entire haystack once, so it may not matter
+#
+# BCR: O(haystack_length)
+#
+#
+# optimizations: once we reach towards the end of haystack, we can probably stop searching if
+#   when needles length is less than remainder of haystack length - current search index since it wouldn't fit anyways
+#
+# initial thoughts on approach:
+#
+# isolate first index of needle
+# loop over haystack and pass if we dont have a match
+# when match, check the next letters
+# -> opoportunity for optimization. if we .each over the array, we'll end up re-checking potentially already checked indexes.
+# -> if we make a while loop or so, we can add the checked indexes to i and pick back up the 'haystack' search where we left off
+#
+# continue until match is found. if so update return variable to starting index
+# else, return -1
+
+# @param {String} haystack
+# @param {String} needle
+# @return {Integer}
+def str_str(haystack, needle)
+    haystack_idx = 0
+    found_idx = -1
+
+    while haystack_idx < haystack.length do
+        # first chars match
+        if haystack[haystack_idx] == needle[0]
+            needle_idx = 1
+            complete_match = false
+            if needle.length == 1
+                complete_match = true
+                break
+            end
+
+            while needle_idx < needle.length do
+                # check first + n char matches
+                # break out of while loop if incomplete match
+                break unless haystack[haystack_idx + needle_idx] == needle[needle_idx]
+
+                # if this last idx matched and we are at the end of 'needles' array, this means we've located our needle
+                
+                if needle_idx == (needle.length - 1 )
+                    complete_match = true 
+                end
+
+                # otherwise, bump to next needle idx and continue the seach
+                needle_idx += 1
+            end
+
+            if complete_match
+                break
+            end
+        end
+
+        haystack_idx += 1
+    end
+    if complete_match
+        found_idx = haystack_idx
+    end
+    found_idx
+end
